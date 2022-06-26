@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-demo-deployment #aks deployment name
+spec:
+  selector:
+    matchLabels:
+      app: aks-demo-pod #pod labels which will have this deployment
+  template:
+    metadata:
+      labels:
+        app: aks-demo-pod #label of current pod
+    spec:
+      containers:
+      - name: aks-demo-container #name of container
+        image: acrdemo0181.azurecr.io/docker-demo:v1 #image of container in acr
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5036

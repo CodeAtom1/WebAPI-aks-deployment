@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-demo-service #aks service 
+spec:
+  selector:
+    app: aks-demo-pod #PODs with which this service will connect to
+  ports:
+  - port: 5036 #external port
+    targetPort: 5036 #internal port<PODs port>
+  type: LoadBalancer #kind of service that aquires public ip from cloud hosting provier and assigns that ip to the service so that external callers can use that service and communicates with the PODs behind the service
