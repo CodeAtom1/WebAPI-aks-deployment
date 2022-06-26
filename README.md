@@ -1,21 +1,38 @@
 # WebAPI-aks-deployment
 
+# Pre-requisites
+- Visual studio code
+- Docker desktop
+- Azure subscription
+- .NET Web API understanding
+- Basic Understanding of kubernetes architecture and azure resources
+
+# How to run
+## Create container
+- Build docker 
+`docker build . -t docker-demo:v1`
+- Run and test your docker locally
+`docker run -p 5036:5036 docker-demo:v1`
+
+## AKS and ACR setup
+Process to create AKS with ACR and deploy our web app container with them:-
 1. Create acr manually from portal
 2. Create service principal(it's an identity) 
  	- to be used in aks , since aks will have to create nodes in azure it needs to have a way to authenticate using an identity.
 3. Go to ACR , grant access to this service principal(SP)
-	- So anyone having the SP can authencticate using this SP.
+	- So aks with the SP can authencticate using this SP and call acr and create nodes.
 4. Create aks 
- 	- with lowest number of nodes & node configuration for dev/testing
+ 	- With lowest number of nodes & node configuration for dev/testing
+ 	- Link it with your acr in creation
  	- Disable monitoring
-5. Login to acr: - az acr login --name acrdemo0181
+5. Login to acr: -`az acr login --name <your acr name>`
  	- It's going to authenticate our docker engine against container registry
 6. View docker images using command:  `docker images`
 7. Select and retag your image(maybe including repository name) which makes sense for acr.
- 	- docker tag docker-demo:v1 acrdemo0181.azurecr.io/docker-demo:v1
+ 	- `docker tag docker-demo:v1 <your acr name>.azurecr.io/docker-demo:v1`
 8. Run Docker images command again to see your updated image
 9. Run Docker push command with your new image
- 	- docker push acrdemo0181.azurecr.io/docker-demo:v1
+ 	- `docker push <your acr name>.azurecr.io/docker-demo:v1`
 10. Verify your pushed image in you container registry> repositories
 11. Now, Install Kubernetes on your vs code
 	- It helps creating yaml files 
@@ -40,7 +57,7 @@
 	    spec:
 	      containers:
 	      - name: aks-demo-container
-	        image: acrdemo0181.azurecr.io/docker-demo:v1
+	        image: <acr name>.azurecr.io/docker-demo:v1
 	        resources:
 	          limits:
 	            memory: "128Mi"
@@ -88,3 +105,4 @@ and also potentially allows external communication with the PODs
 	- Cluster IP is kind of internal IP
 24. Now verify if your service is up & running using command:-
     `kubectl get services`
+25. Check your aks public ip after deployment by LoadBalancer and call your API on that ip.
