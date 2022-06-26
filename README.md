@@ -34,7 +34,7 @@ Process to create AKS with ACR and deploy our web app container with them:-
 9. Run Docker push command with your new image
  	- `docker push <your acr name>.azurecr.io/docker-demo:v1`
 10. Verify your pushed image in you container registry> repositories
-11. Now, Install Kubernetes on your vs code
+11. Now, Install Kubernetes plugin on your vs code
 	- It helps creating yaml files 
 12. Create deployment.yml file in root of your project(this will have the deployment of your container/pod and required  settings & flow for pod/aks)
 	- What is POD? POD is nothing more than a group of one or more containers that share storage/network. And they 
